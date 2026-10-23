@@ -48,9 +48,15 @@ public class SingleCameraActivity extends AbstractPreviewActivity {
     cameraView.start(0, 100);
 
     if (settings.getRtspEnabled()) {
-      startAudio(cameraView);
+      if (settings.getAudioEnabledByDefault()) {
+        startAudio(cameraView);
+      } else {
+        stopAudio(cameraView);
+      }
       if (muteButton == null) {
-        muteButton = addFloatingButton(android.R.drawable.ic_lock_silent_mode_off, v -> {
+        muteButton = addFloatingButton(settings.getAudioEnabledByDefault()
+            ? android.R.drawable.ic_lock_silent_mode_off
+            : android.R.drawable.ic_lock_silent_mode, v -> {
           int drawableRes;
           if (!cameraView.getPlayer().hasAudio()) {
             startAudio(cameraView);
