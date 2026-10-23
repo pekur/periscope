@@ -19,8 +19,12 @@ jobs:
       - run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
       - run: |
           sed -i 's/compileSdk = 37/compileSdk = 36/; s/buildToolsVersion = "37.0.0"/buildToolsVersion = "36.0.0"/' app/build.gradle.kts
+      - name: Set test-only application ID
+        run: |
+          sed -i 's/applicationId = "com.maksz42.periscope"/applicationId = "com.pekur.periscope.test"/' app/build.gradle.kts
+          grep -q 'applicationId = "com.pekur.periscope.test"' app/build.gradle.kts
       - run: chmod +x gradlew && ./gradlew assembleDebug
       - uses: actions/upload-artifact@v4
         with:
-          name: periscope-debug
+          name: periscope-test-debug
           path: app/build/outputs/apk/debug/*.apk
